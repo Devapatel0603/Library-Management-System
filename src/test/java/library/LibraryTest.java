@@ -71,7 +71,7 @@ public class LibraryTest {
      * Tests that a book can be borrowed successfully.
      */
     @Test
-    public void shouldBorrowBook() throws InvalidIsbnException, BookAlreadyExistException {
+    public void shouldBorrowBook() throws InvalidIsbnException, BookAlreadyExistException, BookNotFoundException, BookNotAvailableException {
 
         Library library = new Library();
 
@@ -98,7 +98,7 @@ public class LibraryTest {
      * Tests that attempting to borrow an already borrowed book throws an exception.
      */
     @Test
-    public void shouldNotBorrowAlreadyBorrowedBook() throws InvalidIsbnException, BookAlreadyExistException {
+    public void shouldNotBorrowAlreadyBorrowedBook() throws InvalidIsbnException, BookAlreadyExistException, BookNotFoundException, BookNotAvailableException {
 
         Library library = new Library();
 

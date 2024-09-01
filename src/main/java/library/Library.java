@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import library.exception.BookAlreadyExistException;
+import library.exception.BookNotAvailableException;
+import library.exception.BookNotFoundException;
 
 public class Library {
 
@@ -17,7 +19,7 @@ public class Library {
      * Adds a new book to the library.
      * 
      * @param newBook The book to be added.
-     * @throws IllegalArgumentException if a book with the given ISBN already exists.
+     * @throws BookAlreadyExistException if a book with the given ISBN already exists.
      */
     public void addBook(Book newBook) throws BookAlreadyExistException {
 
@@ -29,11 +31,40 @@ public class Library {
         books.put(newBook.getIsbn(), newBook);
     }
 
-    void borrowBook(String string) {
+    /**
+     * Borrows a book from the library.
+     * 
+     * @param isbn The ISBN of the book to be borrowed.
+     * @throws BookNotAvailableException if the book is already borrowed
+     * @throws BookNotFoundException if book does not exist in the library.
+     */
+    public void borrowBook(String isbn) throws BookNotFoundException, BookNotAvailableException {
+
+        // Check if the book is already borrowed
+        if (borrowedBooks.containsKey(isbn)) {
+            throw new BookNotAvailableException("Book is already borrowed");
+        }
+
+        // Check if the book exists in the library
+        if (!books.containsKey(isbn)) {
+            throw new BookNotFoundException("Book with the given ISBN does not exist");
+
+        }
+
+        // Move the book from available to borrowed
+        Book borrowedBook = books.get(isbn);
+
+        borrowedBooks.put(isbn, borrowedBook);
     }
 
-    List<Book> getBorrowedBooks() {
-        return new ArrayList<Book>();
+
+    /**
+     * Retrieves a list of all borrowed books.
+     * 
+     * @return A list of books that are currently borrowed.
+     */
+    public List<Book> getBorrowedBooks() { 
+        return new ArrayList<>(borrowedBooks.values()); 
     }
 
     /**
