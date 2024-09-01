@@ -20,7 +20,7 @@ Library Management System
     ├── main
     │   └─── java
     │       └─── library
-    │           ├── UI // Optional future UI implementation
+    │           ├── ui // Optional future UI implementation
     │           │   └─── App.java
     │           ├── exception  // Custom exceptions
     │           │   ├── BookAlreadyExistException.java
@@ -58,7 +58,7 @@ Library Management System
 1. **Clone the repository**:
 
     ```shell
-    git clone https://github.com/Devapatel0603/react-dynamic-hooks.git
+    git clone https://github.com/Devapatel0603/Library-Management-System.git
     cd Library-Management-System
     ```
 
