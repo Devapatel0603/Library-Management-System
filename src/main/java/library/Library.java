@@ -99,9 +99,20 @@ public class Library {
         return books.get(isbn);
     }
 
+    /**
+     * Retrieves a list of available (not borrowed) books in the library.
+     * 
+     * @return A list of books that are currently available for borrowing.
+     */
     public List<Book> getAvailableBooks() {
         List<Book> availableBooks = new ArrayList<>();
 
+        // Add books that are not borrowed to the available list
+        for (Book book : books.values()) {
+            if (!borrowedBooks.containsKey(book.getIsbn())) {
+                availableBooks.add(book);
+            }
+        }
         return availableBooks;
     }
 }
