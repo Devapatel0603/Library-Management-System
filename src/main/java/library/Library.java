@@ -99,4 +99,9 @@ public class Library {
         return books.get(isbn);
     }
 
+    public List<Book> getAvailableBooks() {
+        List<Book> availableBooks = new ArrayList<>();
+
+        return availableBooks;
+    }
 }

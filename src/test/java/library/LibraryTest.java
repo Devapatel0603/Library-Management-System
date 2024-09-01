@@ -5,6 +5,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import library.exception.BookAlreadyExistException;
@@ -180,5 +181,29 @@ public class LibraryTest {
         // Try returning a book that is not borrowed
         Throwable exception = assertThrows(BookNotBorrowedException.class, () -> library.returnBook("9780596520687"));
         assertEquals("Book is not borrowed", exception.getMessage());
+    }
+
+    /**
+     * Tests that the list of available (not borrowed) books is correct.
+     */
+    @Test
+    public void showAvailableBooks() throws InvalidIsbnException, BookAlreadyExistException, BookNotFoundException, BookNotAvailableException {
+
+        Library library = new Library();
+
+        // Create expected list of books
+        List<Book> expectedBooks = List.of(
+                new Book("9789295055025", "Book Title 1", "Author Name 1", 2022),
+                new Book("9780306406157", "Book Title 2", "Author Name 2", 2022)
+        );
+
+        library.addBook(new Book("9789295055025", "Book Title 1", "Author Name 1", 2022));
+        library.addBook(new Book("9780306406157", "Book Title 2", "Author Name 2", 2022));
+        library.addBook(new Book("9780596520687", "Book Title 3", "Author Name 3", 2022));
+
+        library.borrowBook("9780596520687");
+
+        // Compare the actual list returned by getAllBooks with the expected list
+        assertTrue(library.getAvailableBooks().containsAll(expectedBooks));
     }
 }
