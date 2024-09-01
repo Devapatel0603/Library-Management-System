@@ -77,4 +77,7 @@ public class Library {
         return books.get(isbn);
     }
 
+    void returnBook(String string) {
+    }
+
 }

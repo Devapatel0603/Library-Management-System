@@ -1,5 +1,6 @@
 package library;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import library.exception.BookAlreadyExistException;
 import library.exception.BookNotAvailableException;
+import library.exception.BookNotBorrowedException;
 import library.exception.BookNotFoundException;
 import library.exception.InvalidIsbnException;
 
@@ -127,5 +129,56 @@ public class LibraryTest {
         // Try borrowing a book with a non-existent ISBN
         Throwable exception = assertThrows(BookNotFoundException.class, () -> library.borrowBook("1234567890123"));
         assertEquals("Book with the given ISBN does not exist", exception.getMessage());
+    }
+
+    /**
+     * Tests that a borrowed book can be successfully returned to the library.
+     */
+    @Test
+    public void shouldReturnBook() throws InvalidIsbnException, BookAlreadyExistException, BookNotFoundException, BookNotAvailableException {
+
+        Library library = new Library();
+
+        Book book1 = new Book("9780596520687", "Book Title 1", "Author Name 1", 2021);
+        Book book2 = new Book("9789295055025", "Book Title 2", "Author Name 2", 2022);
+        Book book3 = new Book("9780306406157", "Book Title 3", "Author Name 3", 2023);
+
+        library.addBook(book1);
+        library.addBook(book2);
+        library.addBook(book3);
+
+        library.borrowBook("9780596520687");
+        library.returnBook("9780596520687");
+
+        // Verify that the borrowed books list is empty after returning the book
+        assertEquals(new ArrayList<Book>(), library.getBorrowedBooks());
+    }
+
+    /**
+     * Tests that attempting to return a book that doesn't exist in the library throws an exception.
+     */
+    @Test
+    public void shouldThrowExceptionWhenReturningNonExistentBook() throws InvalidIsbnException, BookAlreadyExistException, BookNotAvailableException {
+        Library library = new Library();
+
+        // Try returning a book with a non-existent ISBN
+        Throwable exception = assertThrows(BookNotFoundException.class, () -> library.returnBook("9876543210123"));
+        assertEquals("Book with the given ISBN does not exist", exception.getMessage());
+    }
+
+    /**
+     * Tests that attempting to return a book that is not borrowed throws an exception.
+     */
+    @Test
+    public void shouldThrowExceptionWhenReturningBookNotBorrowed() throws InvalidIsbnException, BookAlreadyExistException, BookNotAvailableException {
+        Library library = new Library();
+
+        Book book1 = new Book("9780596520687", "Book Title 1", "Author Name 1", 2021);
+
+        library.addBook(book1);
+
+        // Try returning a book that is not borrowed
+        Throwable exception = assertThrows(BookNotBorrowedException.class, () -> library.returnBook("9780596520687"));
+        assertEquals("Book is not borrowed", exception.getMessage());
     }
 }
