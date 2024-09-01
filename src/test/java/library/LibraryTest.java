@@ -14,7 +14,7 @@ public class LibraryTest {
      * Tests that a book can be successfully added to the library.
      */
     @Test
-    public void shouldAddBookSuccessfully() {
+    public void shouldAddBookSuccessfully() throws InvalidIsbnException, BookAlreadyExistException {
 
         Library library = new Library();
 
@@ -30,7 +30,7 @@ public class LibraryTest {
      * Tests that attempting to add a book with same ISBN number throws an exception.
      */
     @Test
-    public void shouldNotAddBookWithDuplicateIsbn() {
+    public void shouldNotAddBookWithDuplicateIsbn() throws InvalidIsbnException, BookAlreadyExistException {
 
         Library library = new Library();
 
