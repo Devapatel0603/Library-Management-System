@@ -135,7 +135,7 @@ public class LibraryTest {
      * Tests that a borrowed book can be successfully returned to the library.
      */
     @Test
-    public void shouldReturnBook() throws InvalidIsbnException, BookAlreadyExistException, BookNotFoundException, BookNotAvailableException {
+    public void shouldReturnBook() throws InvalidIsbnException, BookAlreadyExistException, BookNotFoundException, BookNotAvailableException, BookNotBorrowedException {
 
         Library library = new Library();
 

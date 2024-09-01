@@ -7,6 +7,7 @@ import java.util.Map;
 
 import library.exception.BookAlreadyExistException;
 import library.exception.BookNotAvailableException;
+import library.exception.BookNotBorrowedException;
 import library.exception.BookNotFoundException;
 
 public class Library {
@@ -57,6 +58,27 @@ public class Library {
         borrowedBooks.put(isbn, borrowedBook);
     }
 
+    /**
+     * Returns a borrowed book to the library.
+     * 
+     * @param isbn The ISBN of the book to be returned.
+     * @throws BookNotFoundException if the book does not exist in the library.
+     * @throws BookNotBorrowedException if the book is not borrowed
+     */
+    public void returnBook(String isbn) throws BookNotFoundException, BookNotBorrowedException {
+
+        // Check if the book is exist in the library
+        if (!books.containsKey(isbn)) {
+            throw new BookNotFoundException("Book with the given ISBN does not exist");
+        }
+
+        // Check if book is not borrowed
+        if (!borrowedBooks.containsKey(isbn)) {
+            throw new BookNotBorrowedException("Book is not borrowed");
+        }
+
+        borrowedBooks.remove(isbn);
+    }
 
     /**
      * Retrieves a list of all borrowed books.
@@ -75,9 +97,6 @@ public class Library {
      */
     public Book getBookByIsbn(String isbn) {
         return books.get(isbn);
-    }
-
-    void returnBook(String string) {
     }
 
 }
