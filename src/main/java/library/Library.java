@@ -1,6 +1,8 @@
 package library;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import library.exception.BookAlreadyExistException;
@@ -27,6 +29,12 @@ public class Library {
         books.put(newBook.getIsbn(), newBook);
     }
 
+    void borrowBook(String string) {
+    }
+
+    List<Book> getBorrowedBooks() {
+        return new ArrayList<Book>();
+    }
 
     /**
      * Retrieves a book by its ISBN.
@@ -37,4 +45,5 @@ public class Library {
     public Book getBookByIsbn(String isbn) {
         return books.get(isbn);
     }
+
 }

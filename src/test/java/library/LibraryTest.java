@@ -1,10 +1,14 @@
 package library;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import library.exception.BookAlreadyExistException;
+import library.exception.BookNotAvailableException;
+import library.exception.BookNotFoundException;
 import library.exception.InvalidIsbnException;
 
 
@@ -63,4 +67,65 @@ public class LibraryTest {
         assertEquals("Invalid ISBN checksum", exception3.getMessage());
     }
 
+    /**
+     * Tests that a book can be borrowed successfully.
+     */
+    @Test
+    public void shouldBorrowBook() throws InvalidIsbnException, BookAlreadyExistException {
+
+        Library library = new Library();
+
+        Book book1 = new Book("9780596520687", "Book Title 1", "Author Name 1", 2021);
+        Book book2 = new Book("9789295055025", "Book Title 2", "Author Name 2", 2022);
+        Book book3 = new Book("9780306406157", "Book Title 3", "Author Name 3", 2023);
+
+        library.addBook(book1);
+        library.addBook(book2);
+        library.addBook(book3);
+
+        library.borrowBook("9780596520687");
+
+        // Create expected list of borrowed books
+        List<Book> expectedBorrowedBooks = List.of(
+            new Book("9780596520687", "Book Title 1", "Author Name 1", 2021)
+        );
+
+         // Verify that the borrowed book list matches the expected result
+        assertEquals(expectedBorrowedBooks, library.getBorrowedBooks());
+    }
+
+    /**
+     * Tests that attempting to borrow an already borrowed book throws an exception.
+     */
+    @Test
+    public void shouldNotBorrowAlreadyBorrowedBook() throws InvalidIsbnException, BookAlreadyExistException {
+
+        Library library = new Library();
+
+        Book book1 = new Book("9780596520687", "Book Title 1", "Author Name 1", 2021);
+        Book book2 = new Book("9789295055025", "Book Title 2", "Author Name 2", 2022);
+        Book book3 = new Book("9780306406157", "Book Title 3", "Author Name 3", 2023);
+
+        library.addBook(book1);
+        library.addBook(book2);
+        library.addBook(book3);
+
+        library.borrowBook("9780596520687");
+
+        // Verify that attempting to borrow an already borrowed book throws an exception
+        Throwable exception = assertThrows(BookNotAvailableException.class, () -> library.borrowBook("9780596520687"));
+        assertEquals("Book is already borrowed", exception.getMessage());
+    }
+
+    /**
+     * Tests that attempting to borrow a book that doesn't exist in the library throws an exception.
+     */
+    @Test
+    public void shouldThrowExceptionWhenBorrowingNonExistentBook() {
+        Library library = new Library();
+
+        // Try borrowing a book with a non-existent ISBN
+        Throwable exception = assertThrows(BookNotFoundException.class, () -> library.borrowBook("1234567890123"));
+        assertEquals("Book with the given ISBN does not exist", exception.getMessage());
+    }
 }
