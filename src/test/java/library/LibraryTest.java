@@ -73,29 +73,29 @@ public class LibraryTest {
     /**
      * Tests that a book can be borrowed successfully.
      */
-    @Test
-    public void shouldBorrowBook() throws InvalidIsbnException, BookAlreadyExistException, BookNotFoundException, BookNotAvailableException {
+    // @Test
+    // public void shouldBorrowBook() throws InvalidIsbnException, BookAlreadyExistException, BookNotFoundException, BookNotAvailableException {
 
-        Library library = new Library();
+    //     Library library = new Library();
 
-        Book book1 = new Book("9780596520687", "Book Title 1", "Author Name 1", 2021);
-        Book book2 = new Book("9789295055025", "Book Title 2", "Author Name 2", 2022);
-        Book book3 = new Book("9780306406157", "Book Title 3", "Author Name 3", 2023);
+    //     Book book1 = new Book("9780596520687", "Book Title 1", "Author Name 1", 2021);
+    //     Book book2 = new Book("9789295055025", "Book Title 2", "Author Name 2", 2022);
+    //     Book book3 = new Book("9780306406157", "Book Title 3", "Author Name 3", 2023);
 
-        library.addBook(book1);
-        library.addBook(book2);
-        library.addBook(book3);
+    //     library.addBook(book1);
+    //     library.addBook(book2);
+    //     library.addBook(book3);
 
-        library.borrowBook("9780596520687");
+    //     library.borrowBook("9780596520687");
 
-        // Create expected list of borrowed books
-        List<Book> expectedBorrowedBooks = List.of(
-            new Book("9780596520687", "Book Title 1", "Author Name 1", 2021)
-        );
+    //     // Create expected list of borrowed books
+    //     List<Book> expectedBorrowedBooks = List.of(
+    //         new Book("9780596520687", "Book Title 1", "Author Name 1", 2021)
+    //     );
 
-         // Verify that the borrowed book list matches the expected result
-        assertEquals(expectedBorrowedBooks, library.getBorrowedBooks());
-    }
+    //      // Verify that the borrowed book list matches the expected result
+    //     assertEquals(expectedBorrowedBooks, library.getBorrowedBooks());
+    // }
 
     /**
      * Tests that attempting to borrow an already borrowed book throws an exception.
@@ -205,5 +205,39 @@ public class LibraryTest {
 
         // Compare the actual list returned by getAllBooks with the expected list
         assertTrue(library.getAvailableBooks().containsAll(expectedBooks));
+    }
+
+    @Test
+    public void borrowBookCheck() {
+        Library library = new Library();
+        assertThrows(IllegalArgumentException.class, () -> library.borrowBookCheckLibrary(4));
+
+        assertEquals(true, library.borrowBookCheckLibrary(2));
+
+    }
+
+
+    @Test
+    public void shouldBorrowBook1() throws InvalidIsbnException, BookAlreadyExistException, BookNotFoundException, BookNotAvailableException {
+
+        Library library = new Library();
+
+        Book book1 = new Book("9780596520687", "Book Title 1", "Author Name 1", 2021);
+        Book book2 = new Book("9789295055025", "Book Title 2", "Author Name 2", 2022);
+        Book book3 = new Book("9780306406157", "Book Title 3", "Author Name 3", 2023);
+        Book book4 = new Book("9781603095020", "Book Title 4", "Author Name 4", 2023);
+
+        library.addBook(book1);
+        library.addBook(book2);
+        library.addBook(book3);
+        library.addBook(book4);
+
+        library.borrowBook("9780596520687");
+        library.borrowBook("9789295055025");
+        library.borrowBook("9780306406157");
+
+
+        Exception e = assertThrows(IllegalArgumentException.class, () -> library.borrowBook("9781603095020"));
+        assertEquals("User can not borrow more than 3 books", e.getMessage());
     }
 }

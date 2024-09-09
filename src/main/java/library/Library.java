@@ -15,6 +15,7 @@ public class Library {
     // Map to store all books with ISBN as the key
     private Map<String, Book> books = new HashMap<>();
     private Map<String, Book> borrowedBooks = new HashMap<>();
+    static int borrowBookNumber = 0;
 
     /**
      * Adds a new book to the library.
@@ -41,6 +42,10 @@ public class Library {
      */
     public void borrowBook(String isbn) throws BookNotFoundException, BookNotAvailableException {
 
+        if(borrowBookNumber > 3){
+            throw new IllegalArgumentException("User can not borrow more than 3 books");
+        }
+
         // Check if the book is already borrowed
         if (borrowedBooks.containsKey(isbn)) {
             throw new BookNotAvailableException("Book is already borrowed");
@@ -54,6 +59,7 @@ public class Library {
 
         // Move the book from available to borrowed
         Book borrowedBook = books.get(isbn);
+        borrowBookNumber++;
 
         borrowedBooks.put(isbn, borrowedBook);
     }
@@ -114,5 +120,12 @@ public class Library {
             }
         }
         return availableBooks;
+    }
+
+    public boolean borrowBookCheckLibrary(int numberOfBooks) {
+        if(numberOfBooks > 3) {
+            throw new IllegalArgumentException();
+        }
+        return true;
     }
 }
